@@ -76,14 +76,14 @@ class FlutterEmailSenderPlugin(private val registrar: Registrar)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
             val file = File(attachmentPath)
-            val uri = FileProvider.getUriForFile(activity, registrar.context().packageName + ".file_provider", file)
+            val uri = FileProvider.getUriForFile(registrar.context(), registrar.context().packageName + ".file_provider", file)
 
             intent.putExtra(Intent.EXTRA_STREAM, uri)
         }
 
-        val packageManager = activity.packageManager
+        val packageManager = activity?.packageManager
 
-        if (packageManager.resolveActivity(intent, 0) != null) {
+        if (packageManager?.resolveActivity(intent, 0) != null) {
             activity.startActivityForResult(intent, REQUEST_CODE_SEND)
         } else {
             callback.error("not_available", "No email clients found!", null)
